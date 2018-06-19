@@ -22,6 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,10 @@ public class CatalogActivity extends AppCompatActivity {
         mDbHelper = new PetDbHelper(this);
     }
 
+    /**
+     * when a new pet is inserted, it goes back to the catalogActivity, and with this method it will refresh the database
+     * and the new entry will be shown on the screen
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -102,10 +107,10 @@ public class CatalogActivity extends AppCompatActivity {
             // In the while loop below, iterate through the rows of the cursor and display
             // the information from each column in this order.
             displayView.setText("The pets table contains " + cursor.getCount() + " pets.\n\n");
-            displayView.append(PetEntry._ID + " - " +
-                    PetEntry.COLUMN_PET_NAME + " - " +
-                    PetEntry.COLUMN_PET_BREED + " - " +
-                    PetEntry.COLUMN_PET_GENDER + " - " +
+            displayView.append(PetEntry._ID + "\t" + " - " + "\t" +
+                    PetEntry.COLUMN_PET_NAME + "\t" + " - " + "\t" +
+                    PetEntry.COLUMN_PET_BREED + "\t" + " - " + "\t" +
+                    PetEntry.COLUMN_PET_GENDER + "\t" + " - " + "\t" +
                     PetEntry.COLUMN_PET_WEIGHT + "\n");
 
             // Figure out the index of each column
@@ -125,10 +130,10 @@ public class CatalogActivity extends AppCompatActivity {
                 int currentGender = cursor.getInt(genderColumnIndex);
                 int currentWeight = cursor.getInt(weightColumnIndex);
                 // Display the values from each column of the current row in the cursor in the TextView
-                displayView.append(("\n" + currentID + " - " +
-                        currentName + " - " +
-                        currentBreed + " - " +
-                        currentGender + " - " +
+                displayView.append(("\n" + currentID + "\t" + " - " + "\t" +
+                        currentName + "\t" + " - " + "\t" +
+                        currentBreed + "\t" + " - " + "\t" +
+                        currentGender + "\t" + " - " + "\t" +
                         currentWeight));
             }
         } finally {
@@ -161,6 +166,7 @@ public class CatalogActivity extends AppCompatActivity {
         // there are no values).
         // The third argument is the ContentValues object containing the info for Toto.
         long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
+        Log.v("CatalogActivity", "NewRowId: " + newRowId);
     }
 
     @Override
